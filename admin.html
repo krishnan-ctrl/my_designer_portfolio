@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krishna | Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body { padding-top: 2rem; }
+        .admin-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto 3rem;
+            padding: 0 2rem;
+        }
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 3rem;
+        }
+        @media (max-width: 900px) {
+            .admin-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        .admin-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .admin-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            padding: 3rem 2rem;
+        }
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .form-row label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        .admin-form select,
+        .admin-form input[type="text"],
+        .admin-form input[type="url"] {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: var(--text-color);
+            font-family: var(--font-main);
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition);
+        }
+        .admin-form select {
+            appearance: none;
+            cursor: pointer;
+        }
+        .admin-form select:focus,
+        .admin-form input:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.1);
+        }
+        .admin-form select option {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+        #alert-box {
+            display: none;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-weight: 500;
+        }
+        .alert-success {
+            background: rgba(0, 255, 136, 0.1);
+            color: #00ff88;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles-js"></div>
+
+    <nav class="admin-nav">
+        <div class="logo">Admin<span class="dot">.</span></div>
+        <div style="display: flex; gap: 1rem;">
+            <a href="index.html" class="btn secondary-btn btn-hover-effect">
+                <i class="fas fa-eye"></i> View Portfolio
+            </a>
+            <button id="logout-btn" class="btn outline-btn btn-hover-effect" style="border-color: rgba(255,255,255,0.2); color: #fff;">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </nav>
+
+    <div class="admin-container">
+        <!-- Add/Edit Form Section -->
+        <div class="admin-section">
+            <h2 class="section-title" style="margin-bottom: 0.5rem;" id="form-title">Add New Video<span class="glow-dot">.</span></h2>
+            
+            <div id="alert-box">Video successfully added!</div>
+
+            <form id="add-video-form" class="admin-form glass-card hover-glow">
+                <input type="hidden" id="editingId" value="">
+                
+                <div class="form-row">
+                    <label for="title">Video Title</label>
+                    <input type="text" id="title" placeholder="e.g. Cinematic Travel Vlog" required>
+                </div>
+                
+                <div class="form-row">
+                    <label for="platform">Platform</label>
+                    <select id="platform" required>
+                        <option value="" disabled selected>Select Platform</option>
+                        <option value="Instagram">Instagram</option>
+                        <option value="YouTube">YouTube</option>
+                        <option value="Brand">Brand</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <label for="videoUrl">Video/Reel URL</label>
+                    <input type="url" id="videoUrl" placeholder="https://..." required>
+                </div>
+                
+                <div class="form-row">
+                    <label for="thumbnailUrl">Custom Thumbnail URL (Optional)</label>
+                    <input type="url" id="thumbnailUrl" placeholder="Leave blank to auto-generate">
+                </div>
+                
+                <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                    <button type="submit" id="submit-btn" class="btn primary-btn btn-hover-effect" style="flex: 1;">
+                        <i class="fas fa-save"></i> <span>Save Video</span>
+                    </button>
+                    <button type="button" id="cancel-btn" class="btn secondary-btn" style="display: none;">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Manage List Section -->
+        <div class="admin-section">
+            <h2 class="section-title" style="margin-bottom: 0.5rem;">Manage Portfolio<span class="glow-dot">.</span></h2>
+            
+            <div class="admin-list-container glass-card" style="padding: 1.5rem; overflow-y: auto; max-height: 600px;">
+                <table class="admin-table" style="width: 100%; text-align: left; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--glass-border);">
+                            <th style="padding: 1rem 0; color: var(--text-muted); font-weight: 500;">Title</th>
+                            <th style="padding: 1rem 0; color: var(--text-muted); font-weight: 500;">Platform</th>
+                            <th style="padding: 1rem 0; color: var(--text-muted); font-weight: 500; text-align: right;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="video-list-body">
+                        <!-- Dynamically populated by admin.js -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Inbox Section -->
+    <div class="admin-container" style="grid-template-columns: 1fr; margin-top: 0; padding-top: 0;">
+        <div class="admin-section">
+            <h2 class="section-title" style="margin-bottom: 0.5rem;"><i class="fas fa-inbox" style="margin-right: 10px; color: var(--accent-blue);"></i>Message Inbox<span class="glow-dot">.</span></h2>
+            <div class="admin-list-container glass-card" style="padding: 1.5rem; overflow-y: auto; max-height: 500px;">
+                <div id="inbox-list" style="display: flex; flex-direction: column; gap: 1rem;">
+                    <!-- Dynamically populated by admin.js -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="admin.js"></script>
+    <script>
+        if (typeof particlesJS !== 'undefined') {
+            particlesJS('particles-js', {
+                particles: {
+                    number: { value: 30 },
+                    color: { value: ["#00d2ff", "#a800ff"] },
+                    shape: { type: "circle" },
+                    opacity: { value: 0.3 },
+                    size: { value: 3 },
+                    line_linked: { enable: false },
+                    move: { enable: true, speed: 1, direction: "none", random: true, out_mode: "out" }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

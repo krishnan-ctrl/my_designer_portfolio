@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krishna | Admin Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            text-align: left;
+        }
+
+        .form-row label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        #login-error {
+            display: none;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-weight: 500;
+            background: rgba(255, 0, 0, 0.1);
+            color: #ff4d4d;
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            font-size: 0.9rem;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .back-link:hover {
+            color: var(--accent-blue);
+        }
+
+        .login-form input[type="text"],
+        .login-form input[type="password"] {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: var(--text-color);
+            font-family: var(--font-main);
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .login-form input:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="particles" id="particles-js"></div>
+
+    <div class="login-container">
+        <form class="login-form glass-card hover-glow" id="login-form">
+            <h2 class="section-title" style="margin-bottom: 0.5rem; font-size: 2rem;">Admin Login<span
+                    class="glow-dot">.</span></h2>
+            <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 0.9rem;">Please enter your credentials.
+            </p>
+
+            <div id="login-error">Incorrect username or password.</div>
+
+            <div class="form-row">
+                <label for="username">Username</label>
+                <input type="text" id="username" style="margin-bottom: 0;" placeholder="Enter username" required>
+            </div>
+
+            <div class="form-row">
+                <label for="password">Password</label>
+                <input type="password" id="password" style="margin-bottom: 0;" placeholder="Enter password" required>
+            </div>
+
+            <button type="submit" class="btn primary-btn btn-hover-effect" style="margin-top: 1rem; width: 100%;">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+
+            <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Return to Portfolio</a>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script>
+        // Check if already logged in
+        if (localStorage.getItem('adminLoggedIn') === 'true') {
+            window.location.href = 'admin.html';
+        }
+
+        // Handle Login
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const errorBox = document.getElementById('login-error');
+
+            if (username === 'krishnanbecse007' && password === '@krishnanbecse007') {
+                localStorage.setItem('adminLoggedIn', 'true');
+                window.location.href = 'admin.html';
+            } else {
+                errorBox.style.display = 'block';
+            }
+        });
+
+        // Particles
+        if (typeof particlesJS !== 'undefined') {
+            particlesJS('particles-js', {
+                particles: {
+                    number: { value: 30 },
+                    color: { value: ["#00d2ff", "#a800ff"] },
+                    shape: { type: "circle" },
+                    opacity: { value: 0.3 },
+                    size: { value: 3 },
+                    line_linked: { enable: false },
+                    move: { enable: true, speed: 1, direction: "none", random: true, out_mode: "out" }
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
